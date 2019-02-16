@@ -1,7 +1,7 @@
 workflow "Deploy Workflow" {
   on = "push"
   resolves = [
-    "Deploy"
+    "Deploy",
   ]
 }
 
