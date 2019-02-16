@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true
+  },
+  "search.exclude": {
+    "dist": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "editor.formatOnSave": true
+}
