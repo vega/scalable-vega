@@ -122,7 +122,8 @@ const spec: Spec = {
       orient: "left",
       grid: true,
       title: "Count of Records",
-      labelOverlap: true
+      labelOverlap: true,
+      gridOpacity: 0.7
     }
   ],
   config: { axisY: { minExtent: 30 } }
