@@ -5,7 +5,22 @@ workflow "Deploy Workflow" {
   ]
 }
 
+action "Install" {
+  uses = "borales/actions-yarn@master"
+  args = "install"
+}
+
+action "Build" {
+  uses = "borales/actions-yarn@master"
+  needs = ["Install"]
+  args = "build"
+}
+
 action "Deploy" {
-  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
-  args = "deploy"
+  uses = "maxheld83/ghpages@v0.2.0"
+  needs = ["Build"]
+  env = {
+    BUILD_DIR = "dist/"
+  }
+  secrets = ["GH_PAT"]
 }
