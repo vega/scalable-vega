@@ -1,7 +1,7 @@
 workflow "Deploy Workflow" {
   on = "push"
   resolves = [
-    "Deploy",
+    "Deploy"
   ]
 }
 
@@ -18,9 +18,15 @@ action "Build" {
 
 action "Deploy" {
   uses = "maxheld83/ghpages@v0.2.0"
-  needs = ["Build"]
+  needs = ["Only Master"]
   env = {
     BUILD_DIR = "dist/"
   }
   secrets = ["GH_PAT"]
+}
+
+action "Only Master" {
+  uses = "actions/bin/filter@master"
+  needs = ["Build"]
+  args = "branch master"
 }
