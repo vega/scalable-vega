@@ -7,9 +7,9 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "vega-embed": "^3.29.0",
     "@mapd/connector": "^4.4.0",
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.0.1",
+    "@domoritz/vega": "^5.0.3"
   },
   "scripts": {
     "start": "parcel index.html",
