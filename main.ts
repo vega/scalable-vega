@@ -17,15 +17,15 @@ async function run() {
   /**
    * A transfrom that creates a dataset.
    */
-  function MapDData(params) {
+  function MapD(params) {
     vega.Transform.call(this, [], params);
   }
-  MapDData.Definition = {
-    type: "MapD_Data",
+  MapD.Definition = {
+    type: "MapD",
     metadata: { changes: true },
     params: [{ name: "query", type: "string", required: true }]
   };
-  const prototypeData = vega.inherits(MapDData, vega.Transform);
+  const prototypeData = vega.inherits(MapD, vega.Transform);
   prototypeData.transform = async function(_, pulse) {
     console.log(_);
     console.log(pulse);
@@ -33,57 +33,14 @@ async function run() {
     const result = await session.queryAsync(_.query);
     console.log(result);
 
-    const out = pulse.fork(pulse.NO_FIELDS & pulse.NO_SOURCE);
+    const out = pulse.fork(pulse.NO_SOURCE);
 
     out.add = out.source = result;
     return out;
   };
 
-  /**
-   * A transform that sets a signals.
-   */
-  function MapDSignal(params) {
-    vega.Transform.call(this, null, params);
-  }
-  MapDSignal.Definition = {
-    type: "MapD_Signal",
-    metadata: { changes: true },
-    params: [
-      { name: "query", type: "string", required: true },
-      { name: "signal", type: "string", required: true },
-      { name: "array", type: "boolean" }
-    ]
-  };
-  const prototypeSignals = vega.inherits(MapDSignal, vega.Transform);
-  prototypeSignals.transform = async function(_, pulse) {
-    console.log(_);
-    console.log(pulse);
-
-    let result = await session.queryAsync(_.query);
-
-    if (_.array) {
-      // convert query result to an array
-      result = result.map(d => {
-        const arr = [];
-        Object.keys(d).forEach(k => {
-          arr[+k] = d[k];
-        });
-        return arr;
-      });
-
-      // we treat results with one row as a flat table
-      if (result.length === 1) {
-        result = result[0];
-      }
-    }
-
-    console.log(result);
-    this.value = result;
-  };
-
   // add mapd transforms
-  vega.transforms["mapd_data"] = MapDData;
-  vega.transforms["mapd_signal"] = MapDSignal;
+  vega.transforms["mapd"] = MapD;
 
   const runtime = vega.parse(spec);
   const view = new vega.View(runtime)
@@ -95,17 +52,15 @@ async function run() {
 
 // transform to compute the extent
 const extentMapD = {
-  type: "mapd_signal",
+  type: "mapd",
   query: {
-    signal: `'select min(airtime) as "0", max(airtime) as "1" from ${table}'`
-  },
-  signal: "extent",
-  array: true
+    signal: `'select min(airtime) as "min", max(airtime) as "max" from ${table}'`
+  }
 } as any;
 
 // transform to compute the extent
 const dataMapD = {
-  type: "mapd_data",
+  type: "mapd",
   query: {
     signal: `'select airtime as "value" from ${table} where airtime is not null limit 1000'`
   }
@@ -118,26 +73,21 @@ const spec: vega.Spec = {
   width: 600,
   height: 250,
   signals: [
-    { name: "maxbins", value: 20, bind: { min: 1, max: 200, type: "range" } }
+    { name: "maxbins", value: 20, bind: { min: 1, max: 200, type: "range" } },
+    {
+      name: "extent",
+      update: "[data('extent')[0]['min'], data('extent')[0]['max']]"
+    }
   ],
   data: [
-    {
-      name: "source",
-      transform: [dataMapD]
-    },
     {
       name: "extent",
       transform: [extentMapD]
     },
     {
       name: "table",
-      source: "source",
       transform: [
-        // {
-        //   type: "extent",
-        //   field: "value",
-        //   signal: "extent"
-        // },
+        dataMapD,
         {
           type: "bin",
           field: "value",
