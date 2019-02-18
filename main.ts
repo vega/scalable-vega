@@ -55,31 +55,30 @@ async function run() {
     ]
   };
   const prototypeSignals = vega.inherits(MapDSignal, vega.Transform);
-  prototypeSignals.transform = function(_, pulse) {
+  prototypeSignals.transform = async function(_, pulse) {
     console.log(_);
     console.log(pulse);
 
-    session.queryAsync(_.query).then(result => {
-      if (_.array) {
-        // convert query result to an array
-        result = result.map(d => {
-          const arr = [];
-          Object.keys(d).forEach(k => {
-            arr[+k] = d[k];
-          });
-          return arr;
+    let result = await session.queryAsync(_.query);
+
+    if (_.array) {
+      // convert query result to an array
+      result = result.map(d => {
+        const arr = [];
+        Object.keys(d).forEach(k => {
+          arr[+k] = d[k];
         });
+        return arr;
+      });
 
-        // we treat results with one row as a flat table
-        if (result.length === 1) {
-          result = result[0];
-        }
+      // we treat results with one row as a flat table
+      if (result.length === 1) {
+        result = result[0];
       }
-      console.log(result);
-      this.value = result;
+    }
 
-      // TODO: reflow here
-    });
+    console.log(result);
+    this.value = result;
   };
 
   // add mapd transforms
@@ -179,11 +178,11 @@ const spec: vega.Spec = {
       name: "x",
       type: "linear",
       domain: {
-        data: "table",
-        fields: ["bin_start", "bin_end"]
+        signal: "[bins.start, bins.stop]"
       },
       range: [0, { signal: "width" }],
-      zero: false
+      zero: false,
+      bins: { signal: "sequence(bins.start, bins.stop + bins.step, bins.step)" }
     },
     {
       name: "y",
@@ -201,10 +200,7 @@ const spec: vega.Spec = {
       grid: false,
       title: "Binned Value",
       labelFlush: true,
-      labelOverlap: true,
-      values: {
-        signal: "sequence(bins.start, bins.stop + bins.step, bins.step)"
-      }
+      labelOverlap: true
     },
     {
       scale: "y",
