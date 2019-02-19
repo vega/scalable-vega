@@ -1,6 +1,8 @@
+import * as vega from "vega";
 import "@mapd/connector/dist/browser-connector";
-import embed from "vega-embed";
-import { Spec } from "vega";
+
+// todo: remove this hack once the types are up to date
+const Transform = (vega as any).Transform;
 
 const connection = new (window as any).MapdCon()
   .protocol("https")
@@ -10,53 +12,136 @@ const connection = new (window as any).MapdCon()
   .user("mapd")
   .password("HyperInteractive");
 
+const table = "flights_donotmodify";
+
 async function run() {
   const session = await connection.connectAsync();
 
-  const table = "flights_donotmodify";
+  /**
+   * A transfrom that loads data from a MapD core database.
+   */
+  function MapDTransform(params) {
+    Transform.call(this, [], params);
+  }
 
-  const result = await session.queryAsync(
-    `select airtime as "value" from ${table} where airtime is not null limit 1000`
-  );
+  MapDTransform.Definition = {
+    type: "MapD",
+    metadata: { changes: true },
+    params: [{ name: "query", type: "string", required: true }]
+  };
+  const prototypeData = vega.inherits(MapDTransform as any, Transform) as any;
 
-  console.log(result);
+  prototypeData.transform = async function(_, pulse) {
+    const result = await session.queryAsync(_.query);
+    console.log("Results", result);
 
-  const { view } = await embed("#view", spec);
+    result.forEach((vega as any).ingest);
 
-  view.insert("source", result).run();
+    const out = pulse.fork(pulse.NO_FIELDS & pulse.NO_SOURCE);
+    out.rem = this.value;
+    this.value = out.add = out.source = result;
+    return out;
+  };
+
+  // add mapd transforms
+  (vega as any).transforms["mapd"] = MapDTransform;
+
+  const runtime = vega.parse(spec);
+  const view = await new vega.View(runtime)
+    .logLevel(vega.Info)
+    .renderer("svg")
+    .initialize(document.querySelector("#view"))
+    .runAsync();
+
+  // log the view so we can debug it
+  console.log(view);
 }
 
-const spec: Spec = {
-  $schema: "https://vega.github.io/schema/vega/v4.json",
+// transform to compute the extent
+const extentMapD = {
+  type: "mapd",
+  query: {
+    signal: `'select min(' + field + ') as "min", max(' + field + ') as "max" from ${table}'`
+  }
+} as any;
+
+// transform to bin and aggregate
+const dataMapD = {
+  type: "mapd",
+  query: {
+    signal: `'select ' + bins.step + ' * floor((' + field + '-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where ' + field + ' between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
+  }
+} as any;
+
+const spec: vega.Spec = {
+  $schema: "https://vega.github.io/schema/vega/v5.json",
   autosize: "pad",
   padding: 5,
   width: 600,
   height: 250,
-  data: [
-    { name: "source" },
+  signals: [
     {
-      name: "table",
-      source: "source",
+      name: "field",
+      value: "airtime",
+      bind: {
+        input: "select",
+        options: [
+          "deptime",
+          "crsdeptime",
+          "arrtime",
+          "crsarrtime",
+          "flightnum",
+          "actualelapsedtime",
+          "crselapsedtime",
+          "airtime",
+          "arrdelay",
+          "depdelay",
+          "distance",
+          "taxiin",
+          "taxiout",
+          "carrierdelay",
+          "weatherdelay",
+          "nasdelay",
+          "securitydelay",
+          "lateaircraftdelay",
+          "plane_year"
+        ]
+      }
+    },
+    {
+      name: "maxbins",
+      value: 20,
+      bind: { input: "range", min: 1, max: 300, debounce: 100 }
+    }
+  ],
+  data: [
+    {
+      name: "extent",
+      transform: [extentMapD]
+    },
+    {
+      name: "bin",
       transform: [
-        {
-          type: "extent",
-          field: "value",
-          signal: "extent"
-        },
+        // this bin transform doesn't actually bin any data, it just computea the bins signal
         {
           type: "bin",
-          field: "value",
-          as: ["bin_start", "bin_end"],
+          field: null,
           signal: "bins",
-          maxbins: 20,
-          extent: { signal: "extent" }
-        },
+          maxbins: { signal: "maxbins" },
+          extent: {
+            signal: "[data('extent')[0]['min'], data('extent')[0]['max']]"
+          }
+        }
+      ]
+    },
+    {
+      name: "table",
+      transform: [
+        dataMapD,
         {
-          type: "aggregate",
-          groupby: ["bin_start", "bin_end"],
-          ops: ["count"],
-          fields: ["*"],
-          as: ["cnt"]
+          type: "formula",
+          expr: "datum.bin_start + bins.step",
+          as: "bin_end"
         }
       ]
     }
@@ -65,18 +150,10 @@ const spec: Spec = {
     {
       name: "marks",
       type: "rect",
-      style: ["bar"],
       from: { data: "table" },
       encode: {
         update: {
-          fill: [
-            {
-              test:
-                'datum["bin_start"] === null || isNaN(datum["bin_start"]) || datum["cnt"] === null || isNaN(datum["cnt"])',
-              value: null
-            },
-            { value: "#4c78a8" }
-          ],
+          fill: { value: "steelblue" },
           x2: { scale: "x", field: "bin_start", offset: 1 },
           x: { scale: "x", field: "bin_end" },
           y: { scale: "y", field: "cnt" },
@@ -90,11 +167,11 @@ const spec: Spec = {
       name: "x",
       type: "linear",
       domain: {
-        data: "table",
-        fields: ["bin_start", "bin_end"]
+        signal: "[bins.start, bins.stop]"
       },
       range: [0, { signal: "width" }],
-      zero: false
+      zero: false,
+      bins: { signal: "sequence(bins.start, bins.stop + bins.step, bins.step)" }
     },
     {
       name: "y",
@@ -110,12 +187,11 @@ const spec: Spec = {
       scale: "x",
       orient: "bottom",
       grid: false,
-      title: "Binned Value",
+      title: {
+        signal: `field`
+      },
       labelFlush: true,
-      labelOverlap: true,
-      values: {
-        signal: "sequence(bins.start, bins.stop + bins.step, bins.step)"
-      }
+      labelOverlap: true
     },
     {
       scale: "y",

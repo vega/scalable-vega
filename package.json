@@ -7,9 +7,9 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "vega-embed": "^3.29.0",
     "@mapd/connector": "^4.4.0",
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.0.1",
+    "vega": "^5.0.0-rc1"
   },
   "scripts": {
     "start": "parcel index.html",
@@ -17,6 +17,9 @@
     "deploy": "npm run build && gh-pages -d dist"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/runtime-corejs2": "^7.3.1",
     "parcel-bundler": "^1.11.0",
     "typescript": "^3.3.3"
   }
