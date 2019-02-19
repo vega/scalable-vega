@@ -29,19 +29,17 @@ async function run() {
     metadata: { changes: true },
     params: [{ name: "query", type: "string", required: true }]
   };
-
-  const prototypeData = vega.inherits(MapDTransform as any, Transform);
+  const prototypeData = vega.inherits(MapDTransform as any, Transform) as any;
 
   prototypeData.transform = async function(_, pulse) {
-    console.log(_);
-    console.log(pulse);
+    console.log("query", _.query);
 
     const result = await session.queryAsync(_.query);
-    console.log(result);
+    console.log("result", result);
 
-    const out = pulse.fork(pulse.NO_SOURCE);
-
-    out.add = out.source = result;
+    const out = pulse.fork(pulse.NO_FIELDS & pulse.NO_SOURCE);
+    out.rem = this.value;
+    this.value = out.add = out.source = result;
     return out;
   };
 
@@ -49,9 +47,11 @@ async function run() {
   (vega as any).transforms["mapd"] = MapDTransform;
 
   const runtime = vega.parse(spec);
-  const view = new vega.View(runtime)
+  const view = await new vega.View(runtime)
+    .logLevel(vega.Info)
+    .renderer("svg")
     .initialize(document.querySelector("#view"))
-    .run();
+    .runAsync();
 
   console.log(view);
 }
@@ -68,7 +68,7 @@ const extentMapD = {
 const dataMapD = {
   type: "mapd",
   query: {
-    signal: `'select airtime as "value" from ${table} where airtime is not null limit 1000'`
+    signal: `'select ' + bins.step + ' * floor((airtime-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where airtime between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
   }
 } as any;
 
@@ -91,23 +91,25 @@ const spec: vega.Spec = {
       transform: [extentMapD]
     },
     {
+      name: "bin",
+      transform: [
+        {
+          type: "bin",
+          field: null,
+          signal: "bins",
+          maxbins: { signal: "maxbins" },
+          extent: { signal: "extent" }
+        }
+      ]
+    },
+    {
       name: "table",
       transform: [
         dataMapD,
         {
-          type: "bin",
-          field: "value",
-          as: ["bin_start", "bin_end"],
-          signal: "bins",
-          maxbins: { signal: "maxbins" },
-          extent: { signal: "extent" }
-        },
-        {
-          type: "aggregate",
-          groupby: ["bin_start", "bin_end"],
-          ops: ["count"],
-          fields: [null],
-          as: ["cnt"]
+          type: "formula",
+          expr: "datum.bin_start + bins.step",
+          as: "bin_end"
         }
       ]
     }
@@ -120,7 +122,7 @@ const spec: vega.Spec = {
       from: { data: "table" },
       encode: {
         update: {
-          fill: { value: "#4c78a8" },
+          fill: { value: "steelblue" },
           x2: { scale: "x", field: "bin_start", offset: 1 },
           x: { scale: "x", field: "bin_end" },
           y: { scale: "y", field: "cnt" },
