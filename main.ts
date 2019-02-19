@@ -1,5 +1,8 @@
+import * as vega from "vega";
 import "@mapd/connector/dist/browser-connector";
-import * as vega from "@domoritz/vega";
+
+// todo: remove this hack once the types are up to date
+const Transform = (vega as any).Transform;
 
 const connection = new (window as any).MapdCon()
   .protocol("https")
@@ -15,17 +18,20 @@ async function run() {
   const session = await connection.connectAsync();
 
   /**
-   * A transfrom that creates a dataset.
+   * A transfrom that loads data from a MapD core database.
    */
-  function MapD(params) {
-    vega.Transform.call(this, [], params);
+  function MapDTransform(params) {
+    Transform.call(this, [], params);
   }
-  MapD.Definition = {
+
+  MapDTransform.Definition = {
     type: "MapD",
     metadata: { changes: true },
     params: [{ name: "query", type: "string", required: true }]
   };
-  const prototypeData = vega.inherits(MapD, vega.Transform);
+
+  const prototypeData = vega.inherits(MapDTransform as any, Transform);
+
   prototypeData.transform = async function(_, pulse) {
     console.log(_);
     console.log(pulse);
@@ -40,7 +46,7 @@ async function run() {
   };
 
   // add mapd transforms
-  vega.transforms["mapd"] = MapD;
+  (vega as any).transforms["mapd"] = MapDTransform;
 
   const runtime = vega.parse(spec);
   const view = new vega.View(runtime)
@@ -58,7 +64,7 @@ const extentMapD = {
   }
 } as any;
 
-// transform to compute the extent
+// transform to bin
 const dataMapD = {
   type: "mapd",
   query: {

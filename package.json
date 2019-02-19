@@ -9,7 +9,7 @@
   "dependencies": {
     "@mapd/connector": "^4.4.0",
     "gh-pages": "^2.0.1",
-    "@domoritz/vega": "^5.0.3"
+    "vega": "^5.0.0-rc1"
   },
   "scripts": {
     "start": "parcel index.html",
