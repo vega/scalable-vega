@@ -1,8 +1,8 @@
 # Scalable Vega
 
-**Note**: Work in progress. Nothing here to see yet.
-
 A demo of how to scale Vega to billions of records. Try it out at https://vega.github.io/scalable-vega/.
+
+The way we implemented this demo is with a custom transform that accepts SQL queries and requests data from an [OmniSci Core](https://www.omnisci.com/platform/core/) database. You could implement this demo with any other database backend as long as it has an API you can call from your browser. In our demo, we constructed the queries with Vega signals so we can create dynamic queries.
 
 ## Deployment
 
