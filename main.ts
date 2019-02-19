@@ -26,7 +26,7 @@ async function run() {
 
   MapDTransform.Definition = {
     type: "MapD",
-    metadata: { changes: true },
+    metadata: { changes: true, source: true },
     params: [{ name: "query", type: "string", required: true }]
   };
   const prototypeData = vega.inherits(MapDTransform as any, Transform) as any;
