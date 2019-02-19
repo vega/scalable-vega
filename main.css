@@ -3,3 +3,7 @@ body {
   margin: 0 auto;
   max-width: 800px;
 }
+
+.vega-bind-name {
+  margin-right: 1em;
+}

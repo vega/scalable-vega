@@ -32,10 +32,8 @@ async function run() {
   const prototypeData = vega.inherits(MapDTransform as any, Transform) as any;
 
   prototypeData.transform = async function(_, pulse) {
-    console.log("query", _.query);
-
     const result = await session.queryAsync(_.query);
-    console.log("result", result);
+    console.log("Results", result);
 
     result.forEach((vega as any).ingest);
 
@@ -46,7 +44,7 @@ async function run() {
   };
 
   // add mapd transforms
-  (vega as any).transform["mapd"] = MapDTransform;
+  (vega as any).transforms["mapd"] = MapDTransform;
 
   const runtime = vega.parse(spec);
   const view = await new vega.View(runtime)
@@ -55,20 +53,23 @@ async function run() {
     .initialize(document.querySelector("#view"))
     .runAsync();
 
+  // log the view so we can debug it
   console.log(view);
 }
 
 // transform to compute the extent
 const extentMapD = {
   type: "mapd",
-  query: `select min(airtime) as "min", max(airtime) as "max" from ${table}`
+  query: {
+    signal: `'select min(' + field + ') as "min", max(' + field + ') as "max" from ${table}'`
+  }
 } as any;
 
 // transform to bin and aggregate
 const dataMapD = {
   type: "mapd",
   query: {
-    signal: `'select ' + bins.step + ' * floor((airtime-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where airtime between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
+    signal: `'select ' + bins.step + ' * floor((' + field + '-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where ' + field + ' between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
   }
 } as any;
 
@@ -80,9 +81,37 @@ const spec: vega.Spec = {
   height: 250,
   signals: [
     {
+      name: "field",
+      value: "airtime",
+      bind: {
+        input: "select",
+        options: [
+          "deptime",
+          "crsdeptime",
+          "arrtime",
+          "crsarrtime",
+          "flightnum",
+          "actualelapsedtime",
+          "crselapsedtime",
+          "airtime",
+          "arrdelay",
+          "depdelay",
+          "distance",
+          "taxiin",
+          "taxiout",
+          "carrierdelay",
+          "weatherdelay",
+          "nasdelay",
+          "securitydelay",
+          "lateaircraftdelay",
+          "plane_year"
+        ]
+      }
+    },
+    {
       name: "maxbins",
       value: 20,
-      bind: { min: 1, max: 300, type: "range", debounce: 100 }
+      bind: { input: "range", min: 1, max: 300, debounce: 100 }
     }
   ],
   data: [
@@ -158,7 +187,9 @@ const spec: vega.Spec = {
       scale: "x",
       orient: "bottom",
       grid: false,
-      title: "Binned Value",
+      title: {
+        signal: `field`
+      },
       labelFlush: true,
       labelOverlap: true
     },
