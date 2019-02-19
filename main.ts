@@ -59,9 +59,7 @@ async function run() {
 // transform to compute the extent
 const extentMapD = {
   type: "mapd",
-  query: {
-    signal: `'select min(airtime) as "min", max(airtime) as "max" from ${table}'`
-  }
+  query: `select min(airtime) as "min", max(airtime) as "max" from ${table}`
 } as any;
 
 // transform to bin and aggregate
@@ -73,7 +71,7 @@ const dataMapD = {
 } as any;
 
 const spec: vega.Spec = {
-  $schema: "https://vega.github.io/schema/vega/v4.json",
+  $schema: "https://vega.github.io/schema/vega/v5.json",
   autosize: "pad",
   padding: 5,
   width: 600,
@@ -119,7 +117,6 @@ const spec: vega.Spec = {
     {
       name: "marks",
       type: "rect",
-      style: ["bar"],
       from: { data: "table" },
       encode: {
         update: {
