@@ -64,7 +64,7 @@ const extentMapD = {
   }
 } as any;
 
-// transform to bin
+// transform to bin and aggregate
 const dataMapD = {
   type: "mapd",
   query: {
@@ -79,7 +79,7 @@ const spec: vega.Spec = {
   width: 600,
   height: 250,
   signals: [
-    { name: "maxbins", value: 20, bind: { min: 1, max: 200, type: "range" } },
+    { name: "maxbins", value: 20, bind: { min: 1, max: 300, type: "range" } },
     {
       name: "extent",
       update: "[data('extent')[0]['min'], data('extent')[0]['max']]"
@@ -93,6 +93,7 @@ const spec: vega.Spec = {
     {
       name: "bin",
       transform: [
+        // this bin transform doesn't actually bin any data, it just computea the bins signal
         {
           type: "bin",
           field: null,
