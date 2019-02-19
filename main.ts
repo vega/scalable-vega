@@ -37,6 +37,8 @@ async function run() {
     const result = await session.queryAsync(_.query);
     console.log("result", result);
 
+    result.forEach((vega as any).ingest);
+
     const out = pulse.fork(pulse.NO_FIELDS & pulse.NO_SOURCE);
     out.rem = this.value;
     this.value = out.add = out.source = result;
@@ -44,7 +46,7 @@ async function run() {
   };
 
   // add mapd transforms
-  (vega as any).transforms["mapd"] = MapDTransform;
+  (vega as any).transform["mapd"] = MapDTransform;
 
   const runtime = vega.parse(spec);
   const view = await new vega.View(runtime)
@@ -77,10 +79,10 @@ const spec: vega.Spec = {
   width: 600,
   height: 250,
   signals: [
-    { name: "maxbins", value: 20, bind: { min: 1, max: 300, type: "range" } },
     {
-      name: "extent",
-      update: "[data('extent')[0]['min'], data('extent')[0]['max']]"
+      name: "maxbins",
+      value: 20,
+      bind: { min: 1, max: 300, type: "range", debounce: 100 }
     }
   ],
   data: [
@@ -97,7 +99,9 @@ const spec: vega.Spec = {
           field: null,
           signal: "bins",
           maxbins: { signal: "maxbins" },
-          extent: { signal: "extent" }
+          extent: {
+            signal: "[data('extent')[0]['min'], data('extent')[0]['max']]"
+          }
         }
       ]
     },
