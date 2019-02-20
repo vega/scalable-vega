@@ -1,8 +1,6 @@
 import * as vega from "vega";
+import QueryCore from "vega-transform-omnisci-core";
 import "@mapd/connector/dist/browser-connector";
-
-// todo: remove this hack once the types are up to date
-const Transform = (vega as any).Transform;
 
 const connection = new (window as any).MapdCon()
   .protocol("https")
@@ -14,60 +12,37 @@ const connection = new (window as any).MapdCon()
 
 const table = "flights_donotmodify";
 
-async function run() {
-  const session = await connection.connectAsync();
+connection.connectAsync().then(session => {
+  // assign session to OmniSci Core transform
+  QueryCore.session(session);
 
-  /**
-   * A transfrom that loads data from a MapD core database.
-   */
-  function MapDTransform(params) {
-    Transform.call(this, [], params);
-  }
-
-  MapDTransform.Definition = {
-    type: "MapD",
-    metadata: { changes: true, source: true },
-    params: [{ name: "query", type: "string", required: true }]
-  };
-  const prototype = vega.inherits(MapDTransform as any, Transform) as any;
-
-  prototype.transform = async function(_, pulse) {
-    const result = await session.queryAsync(_.query);
-    console.log("Results", result);
-
-    result.forEach((vega as any).ingest);
-
-    const out = pulse.fork(pulse.NO_FIELDS & pulse.NO_SOURCE);
-    out.rem = this.value;
-    this.value = out.add = out.source = result;
-    return out;
-  };
-
-  // add mapd transforms
-  (vega as any).transforms["mapd"] = MapDTransform;
+  // add core transforms
+  (vega as any).transforms["querycore"] = QueryCore;
 
   const runtime = vega.parse(spec);
-  const view = await new vega.View(runtime)
+  const view = new vega.View(runtime)
     .logLevel(vega.Info)
     .renderer("svg")
-    .initialize(document.querySelector("#view"))
-    .runAsync();
+    .initialize(document.querySelector("#view"));
 
-  // log the view so we can debug it
-  console.log(view);
-}
+  view.runAsync();
+
+  // assign view and vega to window so we can debug them
+  window["vega"] = vega;
+  window["view"] = view;
+});
 
 // transform to compute the extent
-const extentMapD = {
-  type: "mapd",
+const extent = {
+  type: "querycore",
   query: {
     signal: `'select min(' + field + ') as "min", max(' + field + ') as "max" from ${table}'`
   }
 } as any;
 
-// transform to bin and aggregate
-const dataMapD = {
-  type: "mapd",
+// bin and aggregate
+const data = {
+  type: "querycore",
   query: {
     signal: `'select ' + bins.step + ' * floor((' + field + '-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where ' + field + ' between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
   }
@@ -117,7 +92,7 @@ const spec: vega.Spec = {
   data: [
     {
       name: "extent",
-      transform: [extentMapD]
+      transform: [extent]
     },
     {
       name: "bin",
@@ -129,7 +104,8 @@ const spec: vega.Spec = {
           signal: "bins",
           maxbins: { signal: "maxbins" },
           extent: {
-            signal: "[data('extent')[0]['min'], data('extent')[0]['max']]"
+            signal:
+              "data('extent') ? [data('extent')[0]['min'], data('extent')[0]['max']] : [0, 0]"
           }
         }
       ]
@@ -137,7 +113,7 @@ const spec: vega.Spec = {
     {
       name: "table",
       transform: [
-        dataMapD,
+        data,
         {
           type: "formula",
           expr: "datum.bin_start + bins.step",
@@ -204,5 +180,3 @@ const spec: vega.Spec = {
   ],
   config: { axisY: { minExtent: 30 } }
 };
-
-run();
