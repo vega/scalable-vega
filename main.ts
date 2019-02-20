@@ -29,9 +29,9 @@ async function run() {
     metadata: { changes: true, source: true },
     params: [{ name: "query", type: "string", required: true }]
   };
-  const prototypeData = vega.inherits(MapDTransform as any, Transform) as any;
+  const prototype = vega.inherits(MapDTransform as any, Transform) as any;
 
-  prototypeData.transform = async function(_, pulse) {
+  prototype.transform = async function(_, pulse) {
     const result = await session.queryAsync(_.query);
     console.log("Results", result);
 
