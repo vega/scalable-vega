@@ -130,7 +130,13 @@ const spec: vega.Spec = {
       encode: {
         update: {
           fill: { value: "steelblue" },
-          x2: { scale: "x", field: "bin_start", offset: 1 },
+          x2: {
+            scale: "x",
+            field: "bin_start",
+            offset: {
+              signal: "(bins.stop - bins.start)/bins.step > 150 ? 0 : 1"
+            }
+          },
           x: { scale: "x", field: "bin_end" },
           y: { scale: "y", field: "cnt" },
           y2: { scale: "y", value: 0 }
