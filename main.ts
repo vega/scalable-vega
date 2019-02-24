@@ -153,7 +153,7 @@ const spec: vega.Spec = {
       },
       range: [0, { signal: "width" }],
       zero: false,
-      bins: { signal: "sequence(bins.start, bins.stop + bins.step, bins.step)" }
+      bins: { signal: "bins" }
     },
     {
       name: "y",
