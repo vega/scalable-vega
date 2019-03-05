@@ -9,8 +9,8 @@
   "dependencies": {
     "@mapd/connector": "^4.4.0",
     "gh-pages": "^2.0.1",
-    "vega": "^5.0.0-rc2",
-    "vega-transform-omnisci-core": "^0.0.6"
+    "vega": "^5.0.0",
+    "vega-transform-omnisci-core": "^0.0.8"
   },
   "scripts": {
     "start": "parcel index.html",
