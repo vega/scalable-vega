@@ -9,7 +9,7 @@
   "dependencies": {
     "@mapd/connector": "^4.4.0",
     "gh-pages": "^2.1.1",
-    "vega": "^5.3.2",
+    "vega": "^5.4.0",
     "vega-transform-omnisci-core": "^0.0.8"
   },
   "scripts": {
