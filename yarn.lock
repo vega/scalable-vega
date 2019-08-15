@@ -701,12 +701,13 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.3.tgz#f060bf6eaafae4d56a7dac618980838b0696e2ab"
   integrity sha512-FmuxfCuolpLl0AnQ2NHSzoUKWEJDFl63qXjzdoWBVyFCXzMGm1spBzk7LeHNoVCiWCF7mRVms9e6jEV9+MoPbg==
 
-"@mapd/connector@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@mapd/connector/-/connector-4.4.0.tgz#e4edd4bcb2f946aa4107dd8a1f0154565236edf9"
-  integrity sha512-NJmXje07ebyBPAvbvA4nzFeZp/uO+clwme9M0I50omRmqHUlERKZtNosetuHk7KhTwc9YVH6N15QikXztWd2Nw==
+"@mapd/connector@^4.7.2":
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/@mapd/connector/-/connector-4.7.2.tgz#9cfa32d98b19f333ea9754fff6b8f148d563a640"
+  integrity sha512-zdIFweoItIi68FDGjxDmsdayRv47BwFA+voasu8+I9LN91Ck12RpEvcc/NHgulm2jGiSbvj+qbt1vHIcQZ8icg==
   dependencies:
     codecov "^2.2.0"
+    eventemitter3 "^3.1.0"
     script-loader "^0.7.0"
     thrift "^0.10.0"
 
@@ -2241,6 +2242,11 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+
+eventemitter3@^3.1.0:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
+  integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
 events@^3.0.0:
   version "3.0.0"
