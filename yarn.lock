@@ -5818,10 +5818,10 @@ vega-statistics@^1.2.5, vega-statistics@^1.3.0, vega-statistics@^1.4.0:
   dependencies:
     d3-array "^2.0.3"
 
-vega-transform-omnisci-core@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/vega-transform-omnisci-core/-/vega-transform-omnisci-core-0.0.8.tgz#69eb056442991c636e34cc88b52ab13fb1c1b4f3"
-  integrity sha512-smeBiQ3CRb8G/e0lZ5fGmxtFDVrZKqjNtYYIQvSoBPNtjS2OYTYLDxq/N0xz/mJo40OqX3VWdol/Xk1lF0YmgA==
+vega-transform-omnisci-core@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/vega-transform-omnisci-core/-/vega-transform-omnisci-core-0.0.9.tgz#555cb6716106cd99663519b4bc52d3c0e818a14a"
+  integrity sha512-MJcWaqbtVyCb7svxLJ/Z1O+H4g1+Oje94tmNWNwy0F5o/X7uxeShz8+xkWI8ad/6TvmpPcPsc767YK0saqUgJw==
 
 vega-transforms@^4.1.0:
   version "4.1.0"
