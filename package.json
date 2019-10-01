@@ -15,7 +15,7 @@
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build --public-url '/scalable-vega/' index.html",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "yarn build && gh-pages -d dist"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.3",
