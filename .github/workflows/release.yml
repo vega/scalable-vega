@@ -21,3 +21,4 @@ jobs:
         env:
           FOLDER: dist
           ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH: gh-pages
