@@ -8,7 +8,7 @@
   "private": true,
   "dependencies": {
     "@mapd/connector": "^4.8.0",
-    "gh-pages": "^2.1.1",
+    "gh-pages": "^2.2.0",
     "vega": "^5.9.0",
     "vega-transform-omnisci-core": "^0.0.9"
   },
