@@ -7,7 +7,7 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "@mapd/connector": "^5.1.2",
+    "@mapd/connector": "^5.2.0",
     "gh-pages": "^2.2.0",
     "vega": "^5.12.1",
     "vega-transform-omnisci-core": "^0.0.9"
