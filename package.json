@@ -10,7 +10,7 @@
     "@mapd/connector": "^5.1.2",
     "gh-pages": "^2.2.0",
     "vega": "^5.12.3",
-    "vega-transform-omnisci-core": "^0.0.9"
+    "vega-transform-omnisci-core": "^0.0.10"
   },
   "scripts": {
     "start": "parcel index.html",
