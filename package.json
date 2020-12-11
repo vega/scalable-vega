@@ -7,10 +7,10 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "@mapd/connector": "^5.3.0",
+    "@mapd/connector": "^5.5.0",
     "gh-pages": "^3.1.0",
     "vega": "^5.17.0",
-    "vega-transform-omnisci-core": "^0.0.10"
+    "vega-transform-omnisci-core": "^0.0.11"
   },
   "scripts": {
     "start": "parcel index.html",
@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.3"
   }
 }
