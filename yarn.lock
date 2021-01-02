@@ -5837,10 +5837,10 @@ vega-time@^2.0.3, vega-time@^2.0.4, vega-time@~2.0.4:
     d3-time "^2.0.0"
     vega-util "^1.15.2"
 
-vega-transform-omnisci-core@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/vega-transform-omnisci-core/-/vega-transform-omnisci-core-0.0.11.tgz#a0c87dc9119f637bc62a89f8e86681b4ae469382"
-  integrity sha512-ywg3WkCsNEDfbxEX93yAfM7cu+lZnRAt3kGzgDsLI6vQnc5sKxYPMtv+oeinIY9tmKcHgZ5QTfklR1SFC+x5Dw==
+vega-transform-omnisci-core@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/vega-transform-omnisci-core/-/vega-transform-omnisci-core-0.0.12.tgz#7103441181f90e4ee0592de03760bdb4d335555e"
+  integrity sha512-v37okvgxml6/Dm30U9W7aChnfUjV1FYWMl7Y7D0XuV1NganS2HhBOtv6ReCWQgNgpBnyvXZ0j6TVdZkdDUc1wg==
 
 vega-transforms@~4.9.3:
   version "4.9.3"
