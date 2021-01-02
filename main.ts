@@ -17,7 +17,7 @@ connection.connectAsync().then(session => {
   QueryCore.session(session);
 
   // add core transforms
-  (vega as any).transforms["querycore"] = QueryCore;
+  vega.transforms["querycore"] = QueryCore;
 
   const runtime = vega.parse(spec);
   const view = new vega.View(runtime)
