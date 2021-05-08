@@ -18,6 +18,6 @@ jobs:
         run: yarn build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
-        env:
+        with:
           folder: dist
           branch: gh-pages
