@@ -1,0 +1,1 @@
+{"mappings":"AAAA,KACA,sBAAA,CACA,aAAA,CACA,eACA,CAEA,gBACA,gBACA","sources":["./main.css"],"sourcesContent":["body {\n  font-family: sans-serif;\n  margin: 0 auto;\n  max-width: 800px;\n}\n\n.vega-bind-name {\n  margin-right: 1em;\n}\n"],"names":[],"version":3,"file":"index.49791b7c.css.map"}
