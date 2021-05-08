@@ -1,7 +1,6 @@
 {
   "name": "scalable-vega",
   "version": "0.0.1",
-  "main": "index.js",
   "repository": "git@github.com:vega/scalable-vega.git",
   "author": "Dominik Moritz <domoritz@gmail.com>",
   "license": "BSD-3-Clause",
@@ -18,7 +17,7 @@
     "deploy": "yarn build && gh-pages -d dist"
   },
   "devDependencies": {
-    "parcel": "^1.12.4",
+    "parcel": "^2.0.0-beta.2",
     "typescript": "^4.2.4"
   }
 }
