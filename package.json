@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.2"
   }
 }
