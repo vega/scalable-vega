@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"main.af46ece4.css","sourceRoot":"..","sourcesContent":["body {\n  font-family: sans-serif;\n  margin: 0 auto;\n  max-width: 800px;\n}\n\n.vega-bind-name {\n  margin-right: 1em;\n}\n"]}
