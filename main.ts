@@ -1,8 +1,8 @@
 import * as vega from "vega";
 import QueryCore from "vega-transform-omnisci-core";
-import "@mapd/connector/dist/browser-connector";
+import MapdCon from "@mapd/connector";
 
-const connection = new (window as any).MapdCon()
+const connection = new MapdCon()
   .protocol("https")
   .host("metis.mapd.com")
   .port("443")
@@ -12,7 +12,7 @@ const connection = new (window as any).MapdCon()
 
 const table = "flights_donotmodify";
 
-connection.connectAsync().then(session => {
+connection.connectAsync().then((session) => {
   // assign session to OmniSci Core transform
   QueryCore.session(session);
 
@@ -36,16 +36,16 @@ connection.connectAsync().then(session => {
 const extent = {
   type: "querycore",
   query: {
-    signal: `'select min(' + field + ') as "min", max(' + field + ') as "max" from ${table}'`
-  }
+    signal: `'select min(' + field + ') as "min", max(' + field + ') as "max" from ${table}'`,
+  },
 } as any;
 
 // bin and aggregate
 const data = {
   type: "querycore",
   query: {
-    signal: `'select ' + bins.step + ' * floor((' + field + '-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where ' + field + ' between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`
-  }
+    signal: `'select ' + bins.step + ' * floor((' + field + '-cast(' + bins.start + ' as float))/' + bins.step + ') as "bin_start", count(*) as "cnt" from ${table} where ' + field + ' between ' + bins.start + ' and ' + bins.stop + ' group by bin_start'`,
+  },
 } as any;
 
 const spec: vega.Spec = {
@@ -79,20 +79,20 @@ const spec: vega.Spec = {
           "nasdelay",
           "securitydelay",
           "lateaircraftdelay",
-          "plane_year"
-        ]
-      }
+          "plane_year",
+        ],
+      },
     },
     {
       name: "maxbins",
       value: 20,
-      bind: { input: "range", min: 1, max: 300, debounce: 100 }
-    }
+      bind: { input: "range", min: 1, max: 300, debounce: 100 },
+    },
   ],
   data: [
     {
       name: "extent",
-      transform: [extent]
+      transform: [extent],
     },
     {
       name: "bin",
@@ -105,10 +105,10 @@ const spec: vega.Spec = {
           maxbins: { signal: "maxbins" },
           extent: {
             signal:
-              "data('extent') ? [data('extent')[0]['min'], data('extent')[0]['max']] : [0, 0]"
-          }
-        }
-      ]
+              "data('extent') ? [data('extent')[0]['min'], data('extent')[0]['max']] : [0, 0]",
+          },
+        },
+      ],
     },
     {
       name: "table",
@@ -117,10 +117,10 @@ const spec: vega.Spec = {
         {
           type: "formula",
           expr: "datum.bin_start + bins.step",
-          as: "bin_end"
-        }
-      ]
-    }
+          as: "bin_end",
+        },
+      ],
+    },
   ],
   marks: [
     {
@@ -134,26 +134,26 @@ const spec: vega.Spec = {
             scale: "x",
             field: "bin_start",
             offset: {
-              signal: "(bins.stop - bins.start)/bins.step > 150 ? 0 : 1"
-            }
+              signal: "(bins.stop - bins.start)/bins.step > 150 ? 0 : 1",
+            },
           },
           x: { scale: "x", field: "bin_end" },
           y: { scale: "y", field: "cnt" },
-          y2: { scale: "y", value: 0 }
-        }
-      }
-    }
+          y2: { scale: "y", value: 0 },
+        },
+      },
+    },
   ],
   scales: [
     {
       name: "x",
       type: "linear",
       domain: {
-        signal: "[bins.start, bins.stop]"
+        signal: "[bins.start, bins.stop]",
       },
       range: [0, { signal: "width" }],
       zero: false,
-      bins: { signal: "bins" }
+      bins: { signal: "bins" },
     },
     {
       name: "y",
@@ -161,8 +161,8 @@ const spec: vega.Spec = {
       domain: { data: "table", field: "cnt" },
       range: [{ signal: "height" }, 0],
       nice: true,
-      zero: true
-    }
+      zero: true,
+    },
   ],
   axes: [
     {
@@ -170,10 +170,10 @@ const spec: vega.Spec = {
       orient: "bottom",
       grid: false,
       title: {
-        signal: `field`
+        signal: `field`,
       },
       labelFlush: true,
-      labelOverlap: true
+      labelOverlap: true,
     },
     {
       scale: "y",
@@ -181,8 +181,8 @@ const spec: vega.Spec = {
       grid: true,
       title: "Count of Records",
       labelOverlap: true,
-      gridOpacity: 0.7
-    }
+      gridOpacity: 0.7,
+    },
   ],
-  config: { axisY: { minExtent: 30 } }
+  config: { axisY: { minExtent: 30 } },
 };

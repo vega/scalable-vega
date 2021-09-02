@@ -6,7 +6,8 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "@mapd/connector": "^5.5.1",
+    "@mapd/connector": "^5.5.2",
+    "apache-arrow": "^5.0.0",
     "gh-pages": "^3.2.3",
     "vega": "^5.20.2",
     "vega-transform-omnisci-core": "^0.0.12"
@@ -17,7 +18,7 @@
     "deploy": "yarn build && gh-pages -d dist"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-beta.2",
+    "parcel": "^2.0.0-rc.0",
     "typescript": "^4.4.2"
   }
 }
