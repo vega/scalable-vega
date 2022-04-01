@@ -7,9 +7,9 @@
   "private": true,
   "dependencies": {
     "@mapd/connector": "^5.5.2",
-    "apache-arrow": "^6.0.1",
+    "apache-arrow": "^6.0.0",
     "gh-pages": "^3.2.3",
-    "vega": "^5.21.0",
+    "vega": "^5.22.1",
     "vega-transform-omnisci-core": "^0.0.12"
   },
   "scripts": {
@@ -19,8 +19,8 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
-    "parcel": "^2.3.2",
+    "parcel": "^2.4.1",
     "process": "^0.11.10",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.3"
   }
 }
