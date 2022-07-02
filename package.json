@@ -21,6 +21,6 @@
     "buffer": "^6.0.3",
     "parcel": "^2.6.0",
     "process": "^0.11.10",
-    "typescript": "^4.7.3"
+    "typescript": "^4.7.4"
   }
 }
