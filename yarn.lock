@@ -801,10 +801,10 @@
   resolved "https://registry.yarnpkg.com/@types/flatbuffers/-/flatbuffers-1.10.0.tgz#aa74e30ffdc86445f2f060e1808fc9d56b5603ba"
   integrity sha512-7btbphLrKvo5yl/5CC2OCxUSMx1wV1wvGT1qDXkSt7yi00/YW7E8k6qzXqJHsp+WU0eoG7r6MTQQXI9lIvd0qA==
 
-"@types/node@^17.0.24":
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.39.tgz#3652d82e2a16b4ea679d5ea3143b816c91b7e113"
-  integrity sha512-JDU3YLlnPK3WDao6/DlXLOgSNpG13ct+CwIO17V8q0/9fWJyeMJJ/VyZ1lv8kDprihvZMydzVwf0tQOqGiY2Nw==
+"@types/node@^17.0.36":
+  version "17.0.45"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.45.tgz#2c0fafd78705e7a18b7906b5201a522719dc5190"
+  integrity sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==
 
 "@types/pad-left@2.1.1":
   version "2.1.1"
@@ -840,22 +840,22 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-apache-arrow@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/apache-arrow/-/apache-arrow-8.0.0.tgz#3b3123a067d84a71693a70c16c762b8d9ee0d4e0"
-  integrity sha512-74wgHL9P+vgylNOhnLGw1meOQ1cbYyi+TXo1eDnQJ9g2Ly+k8novUWQIG5SIp6acnErhGRTsMJajwUh9x/ZbaQ==
+apache-arrow@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/apache-arrow/-/apache-arrow-9.0.0.tgz#c2308e5b9723aef75f7a56d9339c2523736a31f6"
+  integrity sha512-Myt0vtm7eRtg4dYQp1hb2A77jbPhCYZcPeNp1F0u7te3rWQtcDI3EOSLxToFywdLQ1hfPzhzdLfDL0tPQObJjw==
   dependencies:
     "@types/command-line-args" "5.2.0"
     "@types/command-line-usage" "5.0.2"
     "@types/flatbuffers" "*"
-    "@types/node" "^17.0.24"
+    "@types/node" "^17.0.36"
     "@types/pad-left" "2.1.1"
     command-line-args "5.2.1"
     command-line-usage "6.1.3"
     flatbuffers "2.0.4"
     json-bignum "^0.0.3"
     pad-left "^2.1.0"
-    tslib "^2.3.1"
+    tslib "^2.4.0"
 
 array-back@^3.0.1, array-back@^3.1.0:
   version "3.1.0"
@@ -2018,7 +2018,7 @@ trim-repeated@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-tslib@^2.3.1, tslib@^2.4.0:
+tslib@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
