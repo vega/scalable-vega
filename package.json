@@ -9,7 +9,7 @@
     "@mapd/connector": "^5.5.2",
     "apache-arrow": "^11.0.0",
     "gh-pages": "^5.0.0",
-    "vega": "^5.22.1",
+    "vega": "^5.23.0",
     "vega-transform-omnisci-core": "^0.0.12"
   },
   "scripts": {
