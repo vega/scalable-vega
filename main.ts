@@ -1,6 +1,6 @@
 import * as vega from "vega";
 import QueryCore from "vega-transform-omnisci-core";
-import MapdCon from "@mapd/connector";
+import MapdCon from "@heavyai/connector";
 
 const connection = new MapdCon()
   .protocol("https")
