@@ -6,7 +6,7 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "@mapd/connector": "^5.5.2",
+    "@heavyai/connector": "^7.0.0",
     "apache-arrow": "^11.0.0",
     "gh-pages": "^5.0.0",
     "vega": "^5.24.0",
@@ -21,6 +21,6 @@
     "buffer": "^6.0.3",
     "parcel": "^2.8.3",
     "process": "^0.11.10",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }
