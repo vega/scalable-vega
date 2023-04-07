@@ -1,13 +1,13 @@
 import * as vega from "vega";
 import QueryCore from "vega-transform-omnisci-core";
-import MapdCon from "@heavyai/connector";
+import HeavyCon from "@heavyai/connector";
 
-const connection = new MapdCon()
+const connection = new HeavyCon()
   .protocol("https")
   .host("metis.mapd.com")
   .port("443")
-  .dbName("mapd")
-  .user("mapd")
+  .dbName("heavyai")
+  .user("admin")
   .password("HyperInteractive");
 
 const table = "flights_donotmodify";
