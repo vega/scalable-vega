@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "@heavyai/connector": "^7.0.0",
-    "apache-arrow": "^13.0.0",
+    "apache-arrow": "^14.0.1",
     "gh-pages": "^6.0.0",
     "vega": "^5.25.0",
     "vega-transform-omnisci-core": "^0.0.12"
