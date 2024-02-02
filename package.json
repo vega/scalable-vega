@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "buffer": "^5.5.0",
-    "parcel": "^2.10.3",
+    "parcel": "^2.11.0",
     "process": "^0.11.10",
     "typescript": "^5.3.3"
   }
