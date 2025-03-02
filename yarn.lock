@@ -878,10 +878,10 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-apache-arrow@^19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/apache-arrow/-/apache-arrow-19.0.0.tgz#631f1104f0504959987e25c9b4f425a61c985a48"
-  integrity sha512-xifuq9x7tYriK64p7xwtpe9JFBxiQxs0OXBnKv36OwQmkjpNhZN7aKXFa0mV5vaOxf0uKHmjlnxUNw/2fl5FRw==
+apache-arrow@^19.0.1:
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/apache-arrow/-/apache-arrow-19.0.1.tgz#aeac6922102e3274f57d97ec72da69d20e55b15c"
+  integrity sha512-APmMLzS4qbTivLrPdQXexGM4JRr+0g62QDaobzEvip/FdQIrv2qLy0mD5Qdmw4buydtVJgbFeKR8f59I6PPGDg==
   dependencies:
     "@swc/helpers" "^0.5.11"
     "@types/command-line-args" "^5.2.3"
